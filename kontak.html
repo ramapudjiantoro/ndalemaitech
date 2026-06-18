@@ -116,7 +116,7 @@
                 </span>
                 <div>
                   <p class="text-sm text-slate2">Waktu respon</p>
-                  <p class="font-display font-semibold text-navy">24/7 (bakul dilarang libur, kecuali mati.)</p>
+                  <p class="font-display font-semibold text-navy">24/7 (bakul dilarang libur, kecuali mati)</p>
                 </div>
               </li>
             </ul>
@@ -141,72 +141,30 @@
             </div>
           </div>
 
-          <!-- RIGHT: Inquiry form (§8.6.2) -->
+          <!-- RIGHT: Layanan CTA -->
           <div class="reveal">
             <div class="card">
-              <h2 class="font-display font-semibold text-xl sm:text-2xl text-navy">Konsul GRATIS dengan mas-mas expert!</h2>
-              <p class="mt-2 text-slate2 text-[0.97rem]">Isi form singkat di bawah. Kolom bertanda <span class="field-req">*</span> wajib diisi.</p>
-
-              <form id="inquiry-form" class="mt-6 space-y-5" novalidate>
-                <!-- honeypot anti-spam -->
-                <div class="honeypot" aria-hidden="true">
-                  <label for="company_website">Jangan isi kolom ini</label>
-                  <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off" />
-                </div>
-
+              <span class="icon-badge mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </span>
+              <h2 class="font-display font-semibold text-xl sm:text-2xl text-navy mt-4">Tertarik layanan apa?</h2>
+              <p class="mt-2 text-slate2 text-[0.97rem] leading-relaxed">Pilih layanan yang kamu minati, lalu langsung ngobrol via WhatsApp — gratis, no pressure.</p>
+              <div class="mt-6 space-y-4">
                 <div>
-                  <label class="field-label" for="nama">Nama Lengkap <span class="field-req">*</span></label>
-                  <input class="field" type="text" id="nama" name="nama" autocomplete="name" required aria-describedby="nama-error" placeholder="Nama anda" />
-                  <p class="field-error" id="nama-error" role="alert"></p>
-                </div>
-
-                <div>
-                  <label class="field-label" for="penginapan">Nama Penginapan <span class="field-req">*</span></label>
-                  <input class="field" type="text" id="penginapan" name="penginapan" required aria-describedby="penginapan-error" placeholder="Mis. Guesthouse Melati" />
-                  <p class="field-error" id="penginapan-error" role="alert"></p>
-                </div>
-
-                <div>
-                  <label class="field-label" for="whatsapp">Nomor WhatsApp <span class="field-req">*</span></label>
-                  <input class="field" type="tel" id="whatsapp" name="whatsapp" inputmode="tel" autocomplete="tel" required aria-describedby="whatsapp-error" placeholder="08xx xxxx xxxx" />
-                  <p class="field-error" id="whatsapp-error" role="alert"></p>
-                </div>
-
-                <div>
-                  <label class="field-label" for="email">Email <span class="text-slate2 font-normal">(opsional)</span></label>
-                  <input class="field" type="email" id="email" name="email" autocomplete="email" placeholder="email@contoh.com" />
-                </div>
-
-                <div>
-                  <label class="field-label" for="layanan">Layanan yang Diminati <span class="field-req">*</span></label>
-                  <select class="field" id="layanan" name="layanan" required aria-describedby="layanan-error">
-                    <option value="" selected disabled>Pilih layanan…</option>
-                    <option value="website">Website</option>
-                    <option value="booking">Sistem Booking</option>
+                  <label class="field-label" for="layanan">Layanan yang Diminati</label>
+                  <select class="field" id="layanan" name="layanan">
+                    <option value="">Pilih layanan…</option>
+                    <option value="website">Website Penginapan</option>
+                    <option value="booking">Sistem Booking Mandiri</option>
                     <option value="lengkap">Paket Lengkap (Website + Booking)</option>
                     <option value="belum-yakin">Belum yakin — mau diskusi dulu</option>
                   </select>
-                  <p class="field-error" id="layanan-error" role="alert"></p>
                 </div>
-
-                <div>
-                  <label class="field-label" for="pesan">Pesan / Pertanyaan <span class="text-slate2 font-normal">(opsional)</span></label>
-                  <textarea class="field" id="pesan" name="pesan" rows="4" placeholder="Ceritakan sedikit tentang penginapanmu atau apa yang ingin anda tanyakan…"></textarea>
-                </div>
-
-                <button type="submit" id="submit-btn" class="btn btn-primary w-full">Kirim Inquiry</button>
-                <p class="text-xs text-slate2 text-center">Dengan mengirim, anda setuju dihubungi via WhatsApp/email untuk follow-up.</p>
-              </form>
-            </div>
-
-            <!-- Success message (shown after submit, FR-10) -->
-            <div id="form-success" class="hidden card text-center py-12">
-              <span class="icon-badge !bg-[#E6F4EC] !text-success mx-auto" style="width:64px;height:64px">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:34px;height:34px"><path d="M20 6 9 17l-5-5"/></svg>
-              </span>
-              <h2 class="font-display font-semibold text-2xl text-navy mt-5">Terima kasih! Inquiry anda terkirim.</h2>
-              <p class="mt-3 text-slate2 prose-measure mx-auto">Saya akan menghubungimu via WhatsApp dalam <strong>24 jam pada hari kerja</strong> untuk menjadwalkan konsultasi gratis. Sampai jumpa!</p>
-              <a href="index.html" class="btn btn-secondary mt-7">Kembali ke Beranda</a>
+                <a id="layanan-wa-btn" href="https://wa.me/6282135222635?text=Halo%20Ndalem%20AI%20Tech%2C%20saya%20tertarik%20dengan%20layanan%20Anda.%20Boleh%20konsultasi%3F" class="btn btn-wa w-full" target="_blank" rel="noopener">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35zM12.02 2C6.49 2 2 6.49 2 12.02c0 1.77.46 3.45 1.34 4.95L2 22l5.16-1.35a9.96 9.96 0 0 0 4.86 1.24h.01c5.52 0 10.01-4.49 10.01-10.02C22.04 6.49 17.55 2 12.02 2z"/></svg>
+                  Chat via WhatsApp
+                </a>
+              </div>
             </div>
           </div>
 
@@ -242,7 +200,20 @@
           </ul>
         </div>
       </div>
-      <div class="mt-12 pt-6 border-t border-white/10 text-sm text-[#8FA9C2]">© <span id="year">2026</span> Ndalem AI Tech. Seluruh hak cipta dilindungi.</div>
+      <div class="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-[#8FA9C2]">© <span id="year">2026</span> Ndalem AI Tech. Seluruh hak cipta dilindungi.</p>
+        <div class="flex items-center gap-5">
+          <a href="https://www.instagram.com/ramapudjiantoro/" target="_blank" rel="noopener" aria-label="Instagram" class="text-[#8FA9C2] hover:text-[#E1306C] transition-colors">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/rama.pudjiantoro/" target="_blank" rel="noopener" aria-label="Facebook" class="text-[#8FA9C2] hover:text-[#1877F2] transition-colors">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://github.com/ramapudjiantoro" target="_blank" rel="noopener" aria-label="GitHub" class="text-[#8FA9C2] hover:text-white transition-colors">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
   </footer>
 
@@ -251,6 +222,25 @@
     <span class="wa-label">Chat via WhatsApp</span>
   </a>
 
+  <script>
+    (function () {
+      var sel = document.getElementById('layanan');
+      var btn = document.getElementById('layanan-wa-btn');
+      var base = 'https://wa.me/6282135222635?text=';
+      var msgs = {
+        '': 'Halo%20Ndalem%20AI%20Tech%2C%20saya%20tertarik%20dengan%20layanan%20Anda.%20Boleh%20konsultasi%3F',
+        'website': 'Halo%20Ndalem%20AI%20Tech%2C%20saya%20tertarik%20dengan%20layanan%20Website%20Penginapan.%20Boleh%20konsultasi%3F',
+        'booking': 'Halo%20Ndalem%20AI%20Tech%2C%20saya%20tertarik%20dengan%20Sistem%20Booking%20Mandiri%20untuk%20penginapan%20saya.%20Boleh%20konsultasi%3F',
+        'lengkap': 'Halo%20Ndalem%20AI%20Tech%2C%20saya%20tertarik%20dengan%20Paket%20Lengkap%20(Website%20%2B%20Sistem%20Booking).%20Boleh%20konsultasi%3F',
+        'belum-yakin': 'Halo%20Ndalem%20AI%20Tech%2C%20saya%20ingin%20diskusi%20soal%20website%20%26%20sistem%20booking%20untuk%20penginapan%20saya.%20Bisa%20mulai%20dari%20mana%3F'
+      };
+      if (sel && btn) {
+        sel.addEventListener('change', function () {
+          btn.href = base + (msgs[sel.value] || msgs['']);
+        });
+      }
+    })();
+  </script>
   <script src="assets/js/main.js" defer></script>
 </body>
 </html>
