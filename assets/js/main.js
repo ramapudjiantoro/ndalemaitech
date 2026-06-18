@@ -105,8 +105,8 @@
       }
     }
 
-    check('nama', function (v) { return v.length >= 2; }, 'Mohon isi nama lengkap kamu.');
-    check('penginapan', function (v) { return v.length >= 2; }, 'Mohon isi nama penginapanmu.');
+    check('nama', function (v) { return v.length >= 2; }, 'Mohon isi nama lengkap anda.');
+    check('penginapan', function (v) { return v.length >= 2; }, 'Mohon isi nama penginapan anda.');
     check('whatsapp', function (v) { return /^[0-9+\s\-()]{8,}$/.test(v); }, 'Masukkan nomor WhatsApp yang valid.');
     check('layanan', function (v) { return v !== ''; }, 'Silakan pilih layanan yang diminati.');
 
