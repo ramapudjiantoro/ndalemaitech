@@ -1,0 +1,16 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# Local tooling / settings
+.claude/
+
+# Dependencies / build (if ported to Next.js later)
+node_modules/
+.next/
+out/
+dist/
+.env
+.env.local
