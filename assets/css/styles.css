@@ -113,7 +113,7 @@ textarea:focus-visible,
   background: #fff;
   border: 1px solid #E2E8F0;
   border-radius: 12px;
-  padding: 1.75rem;
+  padding: 1.25rem;
   box-shadow: var(--shadow-card);
 }
 .card-interactive { transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease; }
