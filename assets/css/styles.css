@@ -392,7 +392,7 @@ html.dark .field::placeholder { color: #6B7E92; }
 html.dark .btn-secondary { color: #DCE8F4; border-color: #3A5168; }
 html.dark .btn-secondary:hover { background: #DCE8F4; color: #0B141E; }
 
-html.dark .icon-badge { background: #16293D; }
+html.dark .icon-badge { background: #0E2D4A; color: #5CB5E8; }
 
 html.dark .browser { border-color: rgba(255, 255, 255, .12); }
 html.dark .placeholder {
@@ -400,6 +400,28 @@ html.dark .placeholder {
   color: #7E93A8;
 }
 html.dark .placeholder svg { color: #3F5972; }
+
+/* ==========================================================================
+   Dark mode — navy/blue section fixes
+   bg-navy has NO built-in dark override; on a near-black body (#0B141E)
+   the original #1A3C5E is nearly invisible. We shift it to a richer,
+   clearly-distinct blue so light↔dark actually looks like a real switch.
+   ========================================================================== */
+
+/* Hero, differentiator box, any bg-navy element */
+html.dark .bg-navy { background-color: #163D65 !important; }
+
+/* Footer — deeper than hero to ground the page hierarchy */
+html.dark .bg-navy-dark,
+html.dark footer { background: #071525 !important; }
+
+/* Brand accent text — #2E75B6 only gets ~2.5:1 on dark body; bump to ~8.7:1 */
+html.dark .eyebrow { color: #5CB5E8; }
+html.dark .nav-link[aria-current="page"]::after { background: #5CB5E8; }
+
+/* Text inside navy dark-mode sections — keep white/light values readable */
+html.dark .bg-navy .text-slate2,
+html.dark .bg-navy .text-\[#D6E4F0\] { color: #BFD9F0; }
 
 /* Arbitrary-value utility overrides */
 html.dark .border-\[\#E2E8F0\] { border-color: #22323F; }
