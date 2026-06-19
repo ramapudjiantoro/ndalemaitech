@@ -9,14 +9,14 @@ PRD's recommended production stack (Next.js + Tailwind).
 
 | File            | Route        | PRD section |
 |-----------------|--------------|-------------|
-| `index.html`    | `/`          | §8.1 Homepage — hero, problem, solution, social proof, how-it-works, final CTA |
+| `beranda.html`  | `/`          | §8.1 Homepage — hero, problem, solution, social proof, how-it-works, final CTA |
 | `portfolio.html`| `/portfolio` | §8.3 Case study: Ndalem Pleret (6-part format) |
 | `kontak.html`   | `/kontak`    | §8.6 Contact — WhatsApp CTA + 5-field inquiry form |
 | `404.html`      | `/404`       | §6.1 Custom on-brand error page |
 
 ## How to view
 
-No build step. Open `index.html` in a browser, or serve the folder:
+No build step. Open `beranda.html` in a browser, or serve the folder:
 
 ```powershell
 python -m http.server 8000
