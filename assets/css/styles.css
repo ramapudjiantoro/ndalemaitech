@@ -19,6 +19,16 @@
   --wa: #25D366;
   --shadow-card: 0 2px 8px rgba(16, 42, 67, 0.08);
   --shadow-lift: 0 12px 30px rgba(16, 42, 67, 0.14);
+
+  /* Theme-reactive section backgrounds — consumed via inline style="background:var(...)"
+     so they win over Tailwind's injected utility sheet regardless of load order. */
+  --section-navy: #1A3C5E;
+  --section-footer: #142E48;
+}
+
+html.dark {
+  --section-navy: #163D65;
+  --section-footer: #071525;
 }
 
 html { scroll-behavior: smooth; }
