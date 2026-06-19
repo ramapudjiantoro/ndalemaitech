@@ -10,11 +10,45 @@
   /* ---- Dark mode toggle -------------------------------------------------- */
   // Initial class is set by an inline script in <head> to avoid flash.
   var themeToggles = document.querySelectorAll('[data-theme-toggle]');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function commitTheme(isDark) {
+    try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
+    themeToggles.forEach(function (b) { b.setAttribute('aria-pressed', String(isDark)); });
+  }
+
   themeToggles.forEach(function (btn) {
     btn.addEventListener('click', function () {
+      var rect = btn.getBoundingClientRect();
+      var cx = Math.round(rect.left + rect.width / 2);
+      var cy = Math.round(rect.top + rect.height / 2);
+
+      /* --- Modern path: View Transitions circular reveal --- */
+      if (!reduceMotion && document.startViewTransition) {
+        var vt = document.startViewTransition(function () {
+          var isDark = document.documentElement.classList.toggle('dark');
+          commitTheme(isDark);
+        });
+        vt.ready.then(function () {
+          var maxR = Math.hypot(
+            Math.max(cx, window.innerWidth - cx),
+            Math.max(cy, window.innerHeight - cy)
+          );
+          document.documentElement.animate(
+            { clipPath: ['circle(0px at ' + cx + 'px ' + cy + 'px)', 'circle(' + maxR + 'px at ' + cx + 'px ' + cy + 'px)'] },
+            { duration: 480, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
+          );
+        });
+        return;
+      }
+
+      /* --- Fallback: smooth colour transition via class --- */
+      if (!reduceMotion) {
+        document.documentElement.classList.add('theme-switching');
+        setTimeout(function () { document.documentElement.classList.remove('theme-switching'); }, 500);
+      }
       var isDark = document.documentElement.classList.toggle('dark');
-      try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
-      themeToggles.forEach(function (b) { b.setAttribute('aria-pressed', String(isDark)); });
+      commitTheme(isDark);
     });
   });
 
