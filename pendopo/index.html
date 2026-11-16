@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" />
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();</script>
+  <title>Pendopo Ndalem — Lihat tim AI saya bekerja | Ndalem AI Tech</title>
+  <meta name="description" content="Pendopo Ndalem menampilkan aktivitas nyata tim asisten AI Ndalem AI Tech: siapa mengerjakan apa di tiap shift. Data anonim, diperbarui tiap shift." />
+  <link rel="canonical" href="https://ramapudjiantoro.github.io/ndalemaitech/pendopo/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Pendopo Ndalem — Lihat tim AI saya bekerja" />
+  <meta property="og:description" content="Aktivitas nyata tim asisten AI Ndalem AI Tech, digambar sebagai pendopo joglo." />
+  <meta property="og:locale" content="id_ID" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class', theme: { extend: {
+        colors: {
+          navy: { DEFAULT: '#1A3C5E', dark: '#142E48' },
+          brand: { DEFAULT: '#2E75B6', dark: '#245F96' },
+          cream: '#F8FAFC', mist: '#EBF4FB',
+          ink: '#1A202C', slate2: '#4A5568',
+          success: '#38A169', amber2: '#D69E2E'
+        },
+        fontFamily: { display: ['Poppins', 'sans-serif'], body: ['Lora', 'Georgia', 'serif'] }
+      } }
+    };
+  </script>
+
+  <style>
+    .pendopo-bingkai { position: relative; border-radius: 14px; overflow: hidden; border: 3px solid #1A3C5E; background: #86b36b; line-height: 0; }
+    html.dark .pendopo-bingkai { border-color: #3A566F; }
+    #pendopo-canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; }
+    #pendopo-lapis { position: absolute; inset: 0; pointer-events: none; line-height: 1.2; }
+    .pendopo-label { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: clamp(9px, 1.5vw, 12px); padding: 2px 6px; border-radius: 6px; }
+    .pendopo-balon { background: #fff; color: #1A202C; box-shadow: 0 1px 0 rgba(0,0,0,.25); }
+    .pendopo-tanda { background: #1A3C5E; color: #fff; transform: translate(-50%, 0); }
+    .pendopo-demo { position: absolute; top: 8px; left: 8px; line-height: 1.2; background: #D69E2E; color: #1A202C; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: .04em; padding: 4px 10px; border-radius: 999px; }
+    .pendopo-agen { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(26,60,94,.12); }
+    html.dark .pendopo-agen { border-bottom-color: rgba(255,255,255,.1); }
+    .pendopo-titik { flex: none; width: 12px; height: 12px; margin-top: 6px; border-radius: 2px; }
+    .pendopo-isi { display: flex; flex-direction: column; }
+    .pendopo-isi strong { font-family: 'Poppins', sans-serif; font-weight: 600; }
+    .pendopo-peran { font-size: .85rem; opacity: .7; }
+    .pendopo-keadaan { font-size: .95rem; }
+    .pendopo-agen[data-state="working"] .pendopo-keadaan { color: #2E75B6; font-weight: 600; }
+    .pendopo-agen[data-state="done"] .pendopo-keadaan { color: #38A169; }
+    .pendopo-agen[data-state="blocked"] .pendopo-keadaan { color: #D64545; font-weight: 600; }
+    html.dark .pendopo-agen[data-state="working"] .pendopo-keadaan { color: #7DB6EA; }
+    #pendopo-angka { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+    .pendopo-kotak { display: flex; flex-direction: column; padding: 12px 14px; border-radius: 12px; background: #EBF4FB; }
+    html.dark .pendopo-kotak { background: #15212E; }
+    .pendopo-n { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.6rem; line-height: 1.1; color: #1A3C5E; }
+    html.dark .pendopo-n { color: #DCE8F4; }
+    .pendopo-l { font-size: .85rem; opacity: .8; }
+    #pendopo-replay[disabled] { opacity: .5; cursor: not-allowed; }
+  </style>
+</head>
+
+<body data-page="pendopo">
+  <a href="#main" class="skip-link">Lewati ke konten utama</a>
+
+  <header class="site-header">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+      <div class="flex items-center justify-between h-[68px]">
+        <a href="../" class="flex items-center gap-2.5" aria-label="Ndalem AI Tech — beranda">
+          <img src="../assets/img/logo.png" alt="Logo Ndalem AI Tech" class="w-9 h-9 rounded-lg object-cover" width="36" height="36" />
+          <span class="font-display font-semibold text-navy text-lg leading-none">Ndalem<span class="text-brand"> AI Tech</span></span>
+        </a>
+        <nav class="flex items-center gap-4 sm:gap-8" aria-label="Navigasi utama">
+          <a href="../" class="nav-link">Beranda</a>
+          <a href="../portfolio/" class="nav-link hidden sm:inline">Portfolio</a>
+          <a href="../kontak/" class="nav-link">Kontak</a>
+          <button type="button" class="theme-toggle" data-theme-toggle aria-label="Ganti mode terang atau gelap" title="Ganti mode terang/gelap"><svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="bg-cream">
+    <section class="mx-auto max-w-4xl px-4 sm:px-8 pt-10 pb-6">
+      <p class="font-display font-semibold text-brand text-sm uppercase tracking-wider">Pendopo Ndalem</p>
+      <h1 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2 leading-tight">Lihat tim AI saya bekerja</h1>
+      <p class="mt-4 text-slate2 text-lg leading-relaxed">Ndalem AI Tech dijalankan satu orang, dibantu tujuh asisten AI. Mereka mencari calon klien, menulis draf, dan memeriksa hasilnya. Pesan tetap saya sendiri yang mengirim. Pendopo ini menunjukkan apa yang mereka kerjakan di shift terakhir.</p>
+    </section>
+
+    <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-6" aria-label="Pendopo">
+      <div class="pendopo-bingkai">
+        <canvas id="pendopo-canvas" role="img" aria-label="Gambar pixel pendopo joglo dengan tujuh asisten AI. Rincian siapa mengerjakan apa ada di daftar di bawah."></canvas>
+        <div id="pendopo-lapis" aria-hidden="true"></div>
+        <span id="pendopo-demo" class="pendopo-demo" hidden>DEMO · data contoh</span>
+      </div>
+
+      <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+        <button id="pendopo-replay" type="button" class="btn btn-primary" disabled>Putar ulang shift terakhir</button>
+        <p id="pendopo-status" class="text-slate2 text-[0.95rem]" aria-live="polite">Memuat data…</p>
+      </div>
+      <p id="pendopo-waktu" class="mt-2 text-slate2 text-sm">Diperbarui tiap shift</p>
+    </section>
+
+    <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-8" aria-labelledby="judul-angka">
+      <h2 id="judul-angka" class="font-display font-semibold text-navy text-xl">Angka shift terakhir</h2>
+      <div id="pendopo-angka" class="mt-4"></div>
+    </section>
+
+    <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-10" aria-labelledby="judul-tim">
+      <h2 id="judul-tim" class="font-display font-semibold text-navy text-xl">Siapa mengerjakan apa</h2>
+      <ul id="pendopo-daftar" class="mt-3 text-ink"></ul>
+    </section>
+
+    <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-14" aria-labelledby="judul-jujur">
+      <div class="card p-6">
+        <h2 id="judul-jujur" class="font-display font-semibold text-navy text-xl">Yang perlu kamu tahu</h2>
+        <ul class="mt-3 space-y-2 text-slate2 leading-relaxed list-disc pl-5">
+          <li>Ini bukan siaran langsung detik demi detik. Datanya diperbarui setiap satu shift selesai, lalu bisa diputar ulang.</li>
+          <li>Tidak ada nama usaha, nomor, atau isi pesan di halaman ini. Yang tampil hanya jenis pekerjaan dan jumlahnya.</li>
+          <li>Asisten AI tidak pernah mengirim pesan ke siapa pun. Mereka hanya menyiapkan; yang mengirim tetap manusia.</li>
+          <li>Kalau tidak ada shift yang berjalan, pendopo memang sepi dan para asisten duduk di angkringan.</li>
+          <li>Tanda <strong>DEMO</strong> berarti yang tampil adalah data contoh, bukan data terbaru.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-[#C3D6E8] py-6" style="background:var(--section-footer)">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p class="text-sm text-[#8FA9C2]">© <span id="year">2026</span> Ndalem AI Tech</p>
+      <p class="text-sm"><a href="../" class="hover:text-white transition-colors">Beranda</a> · <a href="../kontak/" class="hover:text-white transition-colors">Kontak</a></p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+  <script src="sprites.js"></script>
+  <script src="pendopo.js"></script>
+</body>
+</html>

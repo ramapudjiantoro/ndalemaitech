@@ -1,0 +1,80 @@
+{
+  "updated": "2026-11-16T21:29:53+07:00",
+  "shift": "pagi",
+  "agents": {
+    "ki-lurah": {
+      "state": "done",
+      "task": "laporan"
+    },
+    "mbak-niti": {
+      "state": "done",
+      "task": "sinkron",
+      "count": 0
+    },
+    "mas-telik": {
+      "state": "done",
+      "task": "riset",
+      "count": 15
+    },
+    "mbak-serat": {
+      "state": "done",
+      "task": "draft",
+      "count": 6
+    },
+    "pak-pamong": {
+      "state": "done",
+      "task": "qa",
+      "count": 5
+    }
+  },
+  "today": {
+    "riset": 15,
+    "draft": 6,
+    "lolos_qa": 5,
+    "menunggu_kirim": 5
+  },
+  "timeline": [
+    {
+      "t": "20:20",
+      "agent": "ki-lurah",
+      "state": "working",
+      "task": "briefing"
+    },
+    {
+      "t": "20:22",
+      "agent": "mbak-niti",
+      "state": "done",
+      "task": "sinkron"
+    },
+    {
+      "t": "20:25",
+      "agent": "mas-telik",
+      "state": "working",
+      "task": "riset"
+    },
+    {
+      "t": "21:05",
+      "agent": "mas-telik",
+      "state": "done",
+      "task": "riset"
+    },
+    {
+      "t": "21:10",
+      "agent": "mbak-serat",
+      "state": "done",
+      "task": "draft"
+    },
+    {
+      "t": "21:15",
+      "agent": "pak-pamong",
+      "state": "done",
+      "task": "qa"
+    },
+    {
+      "t": "21:20",
+      "agent": "ki-lurah",
+      "state": "done",
+      "task": "laporan"
+    }
+  ]
+}
