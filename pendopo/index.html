@@ -43,12 +43,25 @@
   </script>
 
   <style>
+    .pendopo-lebar { max-width: 1560px; margin-left: auto; margin-right: auto; padding-left: 16px; padding-right: 16px; }
+    @media (min-width: 640px) { .pendopo-lebar { padding-left: 32px; padding-right: 32px; } }
+    .pendopo-tata { display: block; }
+    .pendopo-samping { margin-top: 28px; }
+    @media (min-width: 1024px) {
+      .pendopo-tata { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+      .pendopo-samping { margin-top: 0; max-height: calc(100vh - 110px); overflow-y: auto; position: sticky; top: 88px; padding-right: 4px; }
+      .pendopo-bingkai.tiga-d { aspect-ratio: 16 / 10 !important; }
+    }
+    @media (min-width: 1440px) { .pendopo-tata { grid-template-columns: minmax(0, 1fr) 380px; } }
+    .pendopo-bingkai:fullscreen { aspect-ratio: auto !important; width: 100vw; height: 100vh; border: 0; border-radius: 0; }
+    .pendopo-penuh { position: absolute; left: 8px; bottom: 8px; line-height: 1.2; background: rgba(26,60,94,.85); color: #fff; font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 11px; border-radius: 999px; border: 0; cursor: pointer; }
+    .pendopo-penuh:hover { background: #1A3C5E; }
     .pendopo-bingkai.tiga-d { aspect-ratio: 16 / 11; background: #bfe3f5; }
     @media (max-width: 640px) { .pendopo-bingkai.tiga-d { aspect-ratio: 4 / 4.2; } }
     #pendopo-3d { position: absolute; inset: 0; }
     #pendopo-3d canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
     #pendopo-3d canvas:active { cursor: grabbing; }
-    .pendopo-nama { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; line-height: 1.2; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: clamp(9px, 1.35vw, 12px); padding: 2px 7px; border-radius: 999px; background: rgba(255,255,255,.9); color: #1A202C; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+    .pendopo-nama { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; line-height: 1.2; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: clamp(9px, 1.1vw, 13px); padding: 2px 8px; border-radius: 999px; background: rgba(255,255,255,.9); color: #1A202C; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
     .pendopo-nama[data-state="working"] { background: #2E75B6; color: #fff; }
     .pendopo-nama[data-state="done"] { background: #E3F4EA; color: #1F6B41; }
     .pendopo-nama[data-state="blocked"] { background: #D64545; color: #fff; }
@@ -97,52 +110,71 @@
           <img src="../assets/img/logo.png" alt="Logo Ndalem AI Tech" class="w-9 h-9 rounded-lg object-cover" width="36" height="36" />
           <span class="font-display font-semibold text-navy text-lg leading-none">Ndalem<span class="text-brand"> AI Tech</span></span>
         </a>
-        <nav class="flex items-center gap-4 sm:gap-8" aria-label="Navigasi utama">
+        <nav class="hidden md:flex items-center gap-8" aria-label="Navigasi utama">
           <a href="../" class="nav-link">Beranda</a>
-          <a href="../portfolio/" class="nav-link hidden sm:inline">Portfolio</a>
+          <a href="../portfolio/" class="nav-link">Portfolio</a>
+          <a href="../pendopo/" class="nav-link" aria-current="page">Pendopo</a>
           <a href="../kontak/" class="nav-link">Kontak</a>
           <button type="button" class="theme-toggle" data-theme-toggle aria-label="Ganti mode terang atau gelap" title="Ganti mode terang/gelap"><svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+          <a href="https://wa.me/6282135222635?text=Halo%20Ndalem%20AI%20Tech%2C%20saya%20tertarik%20konsultasi%20gratis%20untuk%20website%20penginapan%20saya." class="btn btn-primary !py-2.5 !px-5 !min-h-0 text-[0.95rem]" target="_blank" rel="noopener">Ngobrol dulu, monggo</a>
         </nav>
+        <div class="flex items-center gap-1 md:hidden">
+          <button type="button" class="theme-toggle" data-theme-toggle aria-label="Ganti mode terang atau gelap" title="Ganti mode terang/gelap"><svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+          <button id="menu-toggle" class="inline-flex items-center justify-center w-11 h-11 rounded-lg text-navy hover:bg-mist" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-menu">
+            <svg data-icon="open" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+            <svg data-icon="close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+          </button>
+        </div>
       </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden border-t border-[#E2E8F0] bg-cream">
+      <nav class="px-5 py-4 flex flex-col gap-1" aria-label="Navigasi mobile">
+        <a href="../" class="nav-link py-2.5">Beranda</a>
+        <a href="../portfolio/" class="nav-link py-2.5">Portfolio</a>
+        <a href="../pendopo/" class="nav-link py-2.5" aria-current="page">Pendopo</a>
+        <a href="../kontak/" class="nav-link py-2.5">Kontak</a>
+        <a href="https://wa.me/6282135222635?text=Halo%20Ndalem%20AI%20Tech%2C%20saya%20tertarik%20konsultasi%20gratis%20untuk%20website%20penginapan%20saya." class="btn btn-primary mt-2 w-full" target="_blank" rel="noopener">Ngobrol dulu, monggo</a>
+      </nav>
     </div>
   </header>
 
   <main id="main" class="bg-cream">
-    <section class="mx-auto max-w-4xl px-4 sm:px-8 pt-10 pb-6">
+    <section class="pendopo-lebar pt-8 lg:pt-10 pb-5">
       <p class="font-display font-semibold text-brand text-sm uppercase tracking-wider">Pendopo Ndalem</p>
       <h1 class="font-display font-bold text-navy text-3xl sm:text-4xl mt-2 leading-tight">Lihat tim AI saya bekerja</h1>
-      <p class="mt-4 text-slate2 text-lg leading-relaxed">Ndalem AI Tech dijalankan satu orang, dibantu tujuh asisten AI. Mereka mencari calon klien, menulis draf, dan memeriksa hasilnya. Pesan tetap saya sendiri yang mengirim. Pendopo ini menunjukkan apa yang mereka kerjakan di shift terakhir.</p>
+      <p class="mt-3 text-slate2 text-lg leading-relaxed max-w-4xl">Ndalem AI Tech dijalankan satu orang, dibantu tujuh asisten AI. Mereka mencari calon klien, menulis draf, dan memeriksa hasilnya. Pesan tetap saya sendiri yang mengirim. Pendopo ini menunjukkan siapa sedang mengerjakan apa.</p>
     </section>
 
-    <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-6" aria-label="Pendopo">
-      <div class="pendopo-bingkai tiga-d">
-        <div id="pendopo-3d"></div>
-        <canvas id="pendopo-canvas" hidden role="img" aria-label="Gambar pixel pendopo joglo dengan tujuh asisten AI. Rincian siapa mengerjakan apa ada di daftar di bawah."></canvas>
-        <div id="pendopo-lapis" aria-hidden="true"></div>
-        <span id="pendopo-demo" class="pendopo-demo" hidden>DEMO · data contoh</span>
-        <span id="pendopo-live" class="pendopo-live" hidden>LANGSUNG</span>
-        <span id="pendopo-petunjuk" class="pendopo-petunjuk">Geser untuk memutar · cubit untuk mendekat</span>
+    <section class="pendopo-lebar pb-10" aria-label="Pendopo">
+      <div class="pendopo-tata">
+        <div>
+          <div class="pendopo-bingkai tiga-d">
+            <div id="pendopo-3d"></div>
+            <canvas id="pendopo-canvas" hidden role="img" aria-label="Gambar pixel pendopo joglo dengan tujuh asisten AI. Rincian siapa mengerjakan apa ada di daftar di samping."></canvas>
+            <div id="pendopo-lapis" aria-hidden="true"></div>
+            <span id="pendopo-demo" class="pendopo-demo" hidden>DEMO · data contoh</span>
+            <span id="pendopo-live" class="pendopo-live" hidden>LANGSUNG</span>
+            <button id="pendopo-penuh" class="pendopo-penuh" type="button" hidden>Layar penuh</button>
+            <span id="pendopo-petunjuk" class="pendopo-petunjuk">Geser untuk memutar · cubit atau gulir untuk mendekat</span>
+          </div>
+          <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+            <button id="pendopo-replay" type="button" class="btn btn-primary" disabled>Putar ulang shift terakhir</button>
+            <p id="pendopo-status" class="text-slate2 text-[0.95rem]" aria-live="polite">Memuat data…</p>
+          </div>
+          <p id="pendopo-waktu" class="mt-2 text-slate2 text-sm">Diperbarui tiap shift</p>
+        </div>
+
+        <aside class="pendopo-samping">
+          <h2 id="judul-angka" class="font-display font-semibold text-navy text-lg">Angka shift terakhir</h2>
+          <div id="pendopo-angka" class="mt-3"></div>
+          <h2 id="judul-tim" class="font-display font-semibold text-navy text-lg mt-7">Siapa mengerjakan apa</h2>
+          <ul id="pendopo-daftar" class="mt-1 text-ink"></ul>
+        </aside>
       </div>
-
-      <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
-        <button id="pendopo-replay" type="button" class="btn btn-primary" disabled>Putar ulang shift terakhir</button>
-        <p id="pendopo-status" class="text-slate2 text-[0.95rem]" aria-live="polite">Memuat data…</p>
-      </div>
-      <p id="pendopo-waktu" class="mt-2 text-slate2 text-sm">Diperbarui tiap shift</p>
     </section>
 
-    <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-8" aria-labelledby="judul-angka">
-      <h2 id="judul-angka" class="font-display font-semibold text-navy text-xl">Angka shift terakhir</h2>
-      <div id="pendopo-angka" class="mt-4"></div>
-    </section>
-
-    <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-10" aria-labelledby="judul-tim">
-      <h2 id="judul-tim" class="font-display font-semibold text-navy text-xl">Siapa mengerjakan apa</h2>
-      <ul id="pendopo-daftar" class="mt-3 text-ink"></ul>
-    </section>
-
-    <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-14" aria-labelledby="judul-jujur">
-      <div class="card p-6">
+    <section class="pendopo-lebar pb-14" aria-labelledby="judul-jujur">
+      <div class="card p-6 max-w-4xl">
         <h2 id="judul-jujur" class="font-display font-semibold text-navy text-xl">Yang perlu kamu tahu</h2>
         <ul class="mt-3 space-y-2 text-slate2 leading-relaxed list-disc pl-5">
           <li>Tanda <strong>LANGSUNG</strong> hanya muncul saat ada shift yang sedang berjalan: itu keadaan saat ini juga. Di luar itu, yang tampil adalah keadaan terakhir, dan shift terakhir bisa diputar ulang.</li>
@@ -150,7 +182,6 @@
           <li>Tidak ada nama usaha, nomor, atau isi pesan di halaman ini. Yang tampil hanya jenis pekerjaan dan jumlahnya.</li>
           <li>Asisten AI tidak pernah mengirim pesan ke siapa pun. Mereka hanya menyiapkan; yang mengirim tetap manusia.</li>
           <li>Kalau tidak ada shift yang berjalan, pendopo memang sepi dan para asisten duduk di angkringan.</li>
-          <li>Tanda <strong>DEMO</strong> berarti yang tampil adalah data contoh, bukan data terbaru.</li>
         </ul>
       </div>
     </section>
@@ -159,7 +190,7 @@
   <footer class="text-[#C3D6E8] py-6" style="background:var(--section-footer)">
     <div class="mx-auto max-w-6xl px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
       <p class="text-sm text-[#8FA9C2]">© <span id="year">2026</span> Ndalem AI Tech</p>
-      <p class="text-sm"><a href="../" class="hover:text-white transition-colors">Beranda</a> · <a href="../kontak/" class="hover:text-white transition-colors">Kontak</a></p>
+      <p class="text-sm"><a href="../" class="hover:text-white transition-colors">Beranda</a> · <a href="../portfolio/" class="hover:text-white transition-colors">Portfolio</a> · <a href="../kontak/" class="hover:text-white transition-colors">Kontak</a></p>
     </div>
   </footer>
 

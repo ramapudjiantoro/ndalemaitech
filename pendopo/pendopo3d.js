@@ -82,6 +82,14 @@ var elTombol = document.getElementById('pendopo-replay');
 var elPetunjuk = document.getElementById('pendopo-petunjuk');
 var elLive = document.getElementById('pendopo-live');
 
+var elPenuh = document.getElementById('pendopo-penuh');
+if (elPenuh && bingkai && bingkai.requestFullscreen && document.fullscreenEnabled) {
+  elPenuh.hidden = false;
+  elPenuh.addEventListener('click', function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else bingkai.requestFullscreen().catch(function () {});
+  });
+  document.addEventListener('fullscreenchange', function () { elPenuh.textContent = document.fullscreenElement ? 'Keluar layar penuh' : 'Layar penuh'; });
+}
 var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
 var tenang = !!mq.matches;
 
