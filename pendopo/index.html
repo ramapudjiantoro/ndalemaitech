@@ -35,7 +35,25 @@
     };
   </script>
 
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+
   <style>
+    .pendopo-bingkai.tiga-d { aspect-ratio: 16 / 11; background: #bfe3f5; }
+    @media (max-width: 640px) { .pendopo-bingkai.tiga-d { aspect-ratio: 4 / 4.2; } }
+    #pendopo-3d { position: absolute; inset: 0; }
+    #pendopo-3d canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+    #pendopo-3d canvas:active { cursor: grabbing; }
+    .pendopo-nama { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; line-height: 1.2; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: clamp(9px, 1.35vw, 12px); padding: 2px 7px; border-radius: 999px; background: rgba(255,255,255,.9); color: #1A202C; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+    .pendopo-nama[data-state="working"] { background: #2E75B6; color: #fff; }
+    .pendopo-nama[data-state="done"] { background: #E3F4EA; color: #1F6B41; }
+    .pendopo-nama[data-state="blocked"] { background: #D64545; color: #fff; }
+    .pendopo-nama[data-state="juragan"] { background: #1A3C5E; color: #fff; }
+    .pendopo-petunjuk { position: absolute; right: 8px; bottom: 8px; line-height: 1.2; background: rgba(26,60,94,.85); color: #fff; font-family: 'Poppins', sans-serif; font-size: 11px; padding: 4px 10px; border-radius: 999px; pointer-events: none; }
     .pendopo-bingkai { position: relative; border-radius: 14px; overflow: hidden; border: 3px solid #1A3C5E; background: #86b36b; line-height: 0; }
     html.dark .pendopo-bingkai { border-color: #3A566F; }
     #pendopo-canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; }
@@ -93,10 +111,12 @@
     </section>
 
     <section class="mx-auto max-w-4xl px-4 sm:px-8 pb-6" aria-label="Pendopo">
-      <div class="pendopo-bingkai">
-        <canvas id="pendopo-canvas" role="img" aria-label="Gambar pixel pendopo joglo dengan tujuh asisten AI. Rincian siapa mengerjakan apa ada di daftar di bawah."></canvas>
+      <div class="pendopo-bingkai tiga-d">
+        <div id="pendopo-3d"></div>
+        <canvas id="pendopo-canvas" hidden role="img" aria-label="Gambar pixel pendopo joglo dengan tujuh asisten AI. Rincian siapa mengerjakan apa ada di daftar di bawah."></canvas>
         <div id="pendopo-lapis" aria-hidden="true"></div>
         <span id="pendopo-demo" class="pendopo-demo" hidden>DEMO · data contoh</span>
+        <span id="pendopo-petunjuk" class="pendopo-petunjuk">Geser untuk memutar · cubit untuk mendekat</span>
       </div>
 
       <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
@@ -138,7 +158,6 @@
   </footer>
 
   <script src="../assets/js/main.js"></script>
-  <script src="sprites.js"></script>
-  <script src="pendopo.js"></script>
+  <script type="module" src="pendopo3d.js"></script>
 </body>
 </html>
