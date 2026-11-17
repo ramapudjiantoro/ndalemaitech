@@ -12,7 +12,7 @@ var FEED_URL = 'https://raw.githubusercontent.com/ramapudjiantoro/nat-feed/main/
 var DEMO_URL = 'demo-status.json';
 /* Penyimpanan langsung (real-time). Kosong = belum tersambung; halaman memakai feed biasa.
    Diisi alamat database, tanpa garis miring di akhir. Hanya dibaca, tidak pernah ditulis dari halaman. */
-var LIVE_URL = '';
+var LIVE_URL = 'https://nat-pendopo-default-rtdb.asia-southeast1.firebasedatabase.app';
 (function () {   // untuk uji di laptop: ?live=http://localhost:8124 (hanya alamat localhost yang diterima)
   try { var u = new URLSearchParams(window.location.search).get('live'); if (u && /^http:\/\/(localhost|127\.0\.0\.1):\d{2,5}$/.test(u)) LIVE_URL = u; } catch (e) {}
 })();
