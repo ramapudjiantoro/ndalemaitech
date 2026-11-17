@@ -10,7 +10,15 @@
 
 var FEED_URL = 'https://raw.githubusercontent.com/ramapudjiantoro/nat-feed/main/status-public.json';
 var DEMO_URL = 'demo-status.json';
+/* Penyimpanan langsung (real-time). Kosong = belum tersambung; halaman memakai feed biasa.
+   Diisi alamat database, tanpa garis miring di akhir. Hanya dibaca, tidak pernah ditulis dari halaman. */
+var LIVE_URL = '';
+(function () {   // untuk uji di laptop: ?live=http://localhost:8124 (hanya alamat localhost yang diterima)
+  try { var u = new URLSearchParams(window.location.search).get('live'); if (u && /^http:\/\/(localhost|127\.0\.0\.1):\d{2,5}$/.test(u)) LIVE_URL = u; } catch (e) {}
+})();
 var BASI_MS = 3 * 3600 * 1000;
+var BASI_LIVE_MS = 45 * 60 * 1000;
+var JEDA_LIVE_MS = 3 * 60 * 1000;
 var MUAT_ULANG_MS = 5 * 60 * 1000;
 var KECEPATAN = 3.4;
 
@@ -72,6 +80,7 @@ var elAngka = document.getElementById('pendopo-angka');
 var elDaftar = document.getElementById('pendopo-daftar');
 var elTombol = document.getElementById('pendopo-replay');
 var elPetunjuk = document.getElementById('pendopo-petunjuk');
+var elLive = document.getElementById('pendopo-live');
 
 var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
 var tenang = !!mq.matches;
@@ -128,7 +137,7 @@ function bersihkan(raw) {
 }
 
 /* ---- Keadaan ----------------------------------------------------------- */
-var feed = null, demo = false, sepi = true;
+var feed = null, demo = false, sepi = true, sumber = null;
 var mode = 'live';
 var replay = { i: 0, timer: 0, langkah: 6, jam: null };
 var pelaku = {};
@@ -158,7 +167,7 @@ function atur(id, state, task, langsung) {
   else if (berubah || !p.jalur.length) p.jalur = jalur;
 }
 function terapkanLive(langsung) {
-  sepi = !feed || !feed.updated || (Date.now() - feed.updated.getTime() > BASI_MS);
+  sepi = !feed || !feed.updated || (Date.now() - feed.updated.getTime() > (sumber === 'live' ? BASI_LIVE_MS : BASI_MS));
   AGENTS.forEach(function (id) {
     var a = (!sepi && feed.agents[id]) ? feed.agents[id] : null;
     if (a && a.state !== 'idle') atur(id, a.state, a.task, langsung); else atur(id, 'idle', null, langsung);
@@ -189,6 +198,7 @@ function mulaiReplay() {
   AGENTS.forEach(function (id) { atur(id, 'idle', null, true); });
   majuReplay();
   if (elTombol) elTombol.textContent = 'Hentikan putar ulang';
+  if (elLive) elLive.hidden = true;
 }
 function majuReplay() {
   var ev = feed.timeline[replay.i];
@@ -210,9 +220,13 @@ function selesaiReplay() {
 function setStatus(t) { if (elStatus) elStatus.textContent = t; }
 function tulisStatusLive() {
   if (!feed) { setStatus('Data belum tersedia.'); return; }
-  if (sepi) { setStatus('Pendopo sedang sepi: tidak ada shift yang berjalan. Para asisten istirahat di angkringan.'); return; }
+  if (sepi) { if (elLive) elLive.hidden = true; setStatus('Pendopo sedang sepi: tidak ada shift yang berjalan. Para asisten istirahat di angkringan.'); return; }
   var aktif = AGENTS.some(function (id) { var s = pelaku[id].state; return s === 'working' || s === 'handoff' || s === 'review'; });
-  setStatus((SHIFT_LABEL[feed.shift] || 'Shift') + (aktif ? ' sedang berjalan.' : ' baru saja selesai.'));
+  // di jeda antar tugas tidak ada yang "working"; selama kabar terakhir masih baru, shift dianggap masih berjalan
+  var baru = sumber === 'live' && (Date.now() - feed.updated.getTime() < JEDA_LIVE_MS);
+  var langsung = sumber === 'live' && (aktif || baru);
+  if (elLive) elLive.hidden = !langsung;
+  setStatus((langsung ? 'Langsung · ' : '') + (SHIFT_LABEL[feed.shift] || 'Shift') + ((aktif || baru) ? ' sedang berjalan.' : ' sudah selesai.'));
 }
 function teksKeadaan(p) {
   if (p.state === 'working') return 'sedang ' + (TASK_LABEL[p.task] || 'bekerja');
@@ -244,7 +258,8 @@ function perbaruiDaftar() {
 function perbaruiPanel() {
   if (elDemo) elDemo.hidden = !demo;
   if (elWaktu) {
-    elWaktu.textContent = (feed && feed.updated) ? 'Diperbarui tiap shift · terakhir ' + tulisWaktu(feed.updated) : 'Diperbarui tiap shift · belum ada data';
+    var awal = sumber === 'live' ? 'Tersambung langsung' : 'Diperbarui tiap shift';
+    elWaktu.textContent = (feed && feed.updated) ? awal + ' · kabar terakhir ' + tulisWaktu(feed.updated) : awal + ' · belum ada data';
   }
   if (elAngka) {
     while (elAngka.firstChild) elAngka.removeChild(elAngka.firstChild);
@@ -603,21 +618,48 @@ function mulai3D(THREE, OrbitControls) {
       .then(function (raw) { var b = bersihkan(raw); if (!b || !b.updated) throw new Error('feed tidak valid'); return b; });
   }
   var pertama = true;
+  function ambilTerbaik() {
+    var rantai = LIVE_URL ? ambil(LIVE_URL + '/status.json').then(function (b) { return { b: b, s: 'live' }; }) : Promise.reject(new Error('tanpa live'));
+    return rantai
+      .catch(function () { return ambil(FEED_URL).then(function (b) { return { b: b, s: 'feed' }; }); })
+      .catch(function () { return ambil(DEMO_URL).then(function (b) { return { b: b, s: 'demo' }; }); })
+      .catch(function () { return { b: null, s: null }; });
+  }
+  var sedangMuat = false;
   function muat() {
-    return ambil(FEED_URL).then(function (b) { feed = b; demo = false; })
-      .catch(function () { return ambil(DEMO_URL).then(function (b) { feed = b; demo = true; }); })
-      .catch(function () { feed = null; demo = false; })
-      .then(function () {
-        perbaruiPanel(); perbaruiPapan(); perbaruiLentera();
-        if (mode === 'live') { terapkanLive(pertama); tulisStatusLive(); }
-        if (pertama && sepi && !tenang && feed && feed.timeline.length) mulaiReplay();
-        pertama = false;
-      });
+    if (sedangMuat) return Promise.resolve();
+    sedangMuat = true;
+    return ambilTerbaik().then(function (h) {
+      sedangMuat = false;
+      var sama = feed && h.b && feed.updated && h.b.updated.getTime() === feed.updated.getTime() && h.s === sumber;
+      if (sama && !pertama) {      // tidak ada kabar baru; cukup periksa apakah datanya sudah basi
+        if (mode === 'live' && !sepi && Date.now() - feed.updated.getTime() > (sumber === 'live' ? BASI_LIVE_MS : BASI_MS)) { terapkanLive(false); tulisStatusLive(); }
+        return;
+      }
+      feed = h.b; sumber = h.s; demo = h.s === 'demo';
+      perbaruiPanel(); perbaruiPapan(); perbaruiLentera();
+      if (mode === 'replay' && !pertama && sumber === 'live') selesaiReplay();   // ada kabar langsung: tinggalkan putar ulang
+      else if (mode === 'live') { terapkanLive(pertama); tulisStatusLive(); }
+      if (pertama && sepi && !tenang && feed && feed.timeline.length) mulaiReplay();
+      pertama = false;
+    }, function () { sedangMuat = false; });
+  }
+  function langganan() {
+    if (!LIVE_URL) return;
+    var berkala = null;
+    function cekBerkala() { if (!berkala) berkala = window.setInterval(muat, 3000); }
+    if (!window.EventSource) { cekBerkala(); return; }
+    try {
+      var es = new EventSource(LIVE_URL + '/status.json');
+      es.addEventListener('put', muat); es.addEventListener('patch', muat);
+      es.onerror = function () { es.close(); cekBerkala(); };
+    } catch (e) { cekBerkala(); }
   }
   if (elTombol) elTombol.addEventListener('click', function () { if (mode === 'replay') selesaiReplay(); else mulaiReplay(); });
   if (mq.addEventListener) mq.addEventListener('change', function (e) { tenang = e.matches; if (tenang) kontrol.autoRotate = false; });
 
-  perbaruiDaftar(); muat(); window.setInterval(muat, MUAT_ULANG_MS);
+  perbaruiDaftar(); muat().then(langganan); window.setInterval(muat, MUAT_ULANG_MS);
+  window.setInterval(function () { if (mode === 'live' && feed) tulisStatusLive(); }, 20000);
   window.requestAnimationFrame(putaran);
 }
 
